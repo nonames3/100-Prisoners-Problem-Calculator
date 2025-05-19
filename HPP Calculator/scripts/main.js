@@ -1,5 +1,5 @@
 // https://www.geeksforgeeks.org/find-all-combinations-that-adds-upto-given-number-2/
-// This site gave the base line formula for calculating all of the combinations. 
+// This site gave the base line method for calculating all of the combinations. 
 
 //https://smoothiegames.itch.io/endless-abyss
 //go check out this game ^ 
@@ -7,9 +7,10 @@
 let boxesAmountText = document.getElementById("boxes")
 let guessAmountText = document.getElementById("guesses")
 let SUCCESSText = document.getElementById("SUCCESS")
-let boxesButton = document.getElementById("boxesButton")
-let printArrayButton = document.getElementById("arrayButton")
-let guessesButton = document.getElementById("guessesButton")
+let boxesImg = document.getElementById("boxesImg")
+let guessesImg = document.getElementById("guessesImg")
+let calcImg = document.getElementById("calcImg")
+//let styleSheet = document.styleSheets[1]
 let boxInteger = 0
 let guessInteger = 0
 let bigLoopPermutaions = 0
@@ -18,31 +19,17 @@ let loopCombinationsProb = [];
 let loopCombinations = [];
 let numOfCombinations = [];
 let bigLoopCombinationsIndexes = [];
-let absolute = "https://docs.google.com/presentation/d/1mCYoEoATJvJ7WIX0fb7eTLYwE6M0r7sQHqDZlG06YVo/present?token=AC4w5Vh3zGFTWL2HPCKvC7_6Jh7TnhRu_A:1604875742839&includes_info_params=1&eisi=COjZvoSE9OwCFQXOOgcd95EAeg#slide=id.ga8c6825146_0_14"
 
 //button to enter the number of boxes
-boxesButton.onclick = () => {
+boxesImg.onclick = () => {
     setNumberOfBoxes();
-};
-
-//diagnostic button
-printArrayButton.onclick = () => {
-    loopCombinations = []; loopCombinationsProb = []; bigLoopCombinationsIndexes = []; bigLoopPermutaions = 0; finalProbablity = 0;
-    findCombinations(boxInteger)
-    //console.table(loopCombinations)
-    intFindBigLoops()
-    //console.table(bigLoopCombinationsIndexes)
-    calcCombinationNumInt()
-    //console.table(loopCombinationsProb)
-    //console.log(loopCombinations.length)
-    findTotalProb()
-    findFinalProb()
-    //console.log(finalProbablity)
+    calcAvaliblity();
 };
 
 //button to enter the number of guesses
-guessesButton.onclick = () => {
+guessesImg.onclick = () => {
     setNumberOfGuesses();
+    calcAvaliblity();
 };
 
 //promts you for the number of boxes after clicking the "change number of boxes" button. 
@@ -94,6 +81,32 @@ function intCheckGuesses(x) {
         guessAmountText.textContent = `The amount of boxes is ${numGuesses}`;
     }
 }
+
+function calcAvaliblity () {
+    if (boxInteger > 0 && guessInteger > 0) {
+        calcImg.style.opacity = "100%"
+    }
+}
+
+//button to trigger the calculations for success. 
+calcImg.onclick = () => {
+    if (boxInteger > 0 && guessInteger > 0) {
+        loopCombinations = []; loopCombinationsProb = []; bigLoopCombinationsIndexes = []; bigLoopPermutaions = 0; finalProbablity = 0;
+        findCombinations(boxInteger)
+        //console.table(loopCombinations)
+        intFindBigLoops()
+        //console.table(bigLoopCombinationsIndexes)
+        calcCombinationNumInt()
+        //console.table(loopCombinationsProb)
+        //console.log(loopCombinations.length)
+        findTotalProb()
+        findFinalProb()
+        //console.log(bigLoopPermutaions)
+        //console.log()
+        //console.log()
+        //console.log(finalProbablity)
+    }
+};
 
 //initiates the function to calculate all the combinations of loop lengths
 function findCombinations(x) {
@@ -184,13 +197,19 @@ function factorialize(x) {
     return semiFac
 }
 
+//function to add all the permutations together.
 function findTotalProb() {
     for (let b=0; b<loopCombinationsProb.length; b++) {
         bigLoopPermutaions = bigLoopPermutaions + loopCombinationsProb[b]
     }
 }
 
+//function to find the final probablity and make in a precent
 function findFinalProb() {
     finalProbablity = 1 - (bigLoopPermutaions/(factorialize(boxInteger)))
-    SUCCESSText.textContent = `Your Chance Of Success Is: ${finalProbablity*100}%!!!`;
+    if (finalProbablity < 0) {
+        SUCCESSText.textContent = `Success chance to low to calculate (below 0.0000001%), try decreasing the difference in number of guesses and boxes.`
+    } else {
+        SUCCESSText.textContent = `Your Chance Of Success Is: ${finalProbablity*100}%!!!`
+    }
 }

@@ -1,0 +1,24 @@
+#calcImg {
+    opacity: 30%;
+}
+
+html {
+    font-size: 20px; 
+    background-color:rgb(181, 255, 244);
+}
+
+p.small {
+    font-family: 6px;
+    color: gray;
+}
+
+.images {
+    height: 200px;
+    width: 200px;
+    aspect-ratio: 1 / 1;
+}
+
+
+
+
+
